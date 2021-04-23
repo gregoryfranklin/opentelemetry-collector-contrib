@@ -124,11 +124,12 @@ func (l *lokiExporter) logDataToLoki(ld pdata.Logs) (pr *logproto.PushRequest, n
 	rls := ld.ResourceLogs()
 	for i := 0; i < rls.Len(); i++ {
 		ills := rls.At(i).InstrumentationLibraryLogs()
+		resource := rls.At(i).Resource()
 		for j := 0; j < ills.Len(); j++ {
 			logs := ills.At(j).Logs()
 			for k := 0; k < logs.Len(); k++ {
 				log := logs.At(k)
-				attribLabels, ok := l.convertAttributesToLabels(log.Attributes())
+				attribLabels, ok := l.convertAttributesToLabels(resource.Attributes())
 				if !ok {
 					numDroppedLogs++
 					continue
