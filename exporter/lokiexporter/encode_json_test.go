@@ -39,7 +39,7 @@ func exampleLog() (pdata.LogRecord, pdata.Resource) {
 }
 
 func exampleJSON() string {
-	jsonExample := `{"name":"name","body":"Example log","traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"},"resources":{"host.name":"something"}}`
+	jsonExample := `{"name":"name","body":"Example log","traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"}}`
 	return jsonExample
 }
 
@@ -52,7 +52,7 @@ func TestConvertString(t *testing.T) {
 }
 
 func TestConvertNonString(t *testing.T) {
-	in := `{"name":"name","body":{"key1":"value","key2":"value"},"traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"},"resources":{"host.name":"something"}}`
+	in := `{"name":"name","body":{"key1":"value","key2":"value"},"traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"}}`
 	log, resource := exampleLog()
 	mapVal := pdata.NewAttributeValueMap()
 	mapVal.MapVal().Insert("key1", pdata.NewAttributeValueString("value"))

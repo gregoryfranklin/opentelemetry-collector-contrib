@@ -30,7 +30,6 @@ type lokiEntry struct {
 	SpanID     string                 `json:"spanid,omitempty"`
 	Severity   string                 `json:"severity,omitempty"`
 	Attributes map[string]interface{} `json:"attributes,omitempty"`
-	Resources  map[string]interface{} `json:"resources,omitempty"`
 }
 
 func serializeBody(body pdata.AttributeValue) ([]byte, error) {
@@ -63,7 +62,6 @@ func encodeJSON(lr pdata.LogRecord, res pdata.Resource) (string, error) {
 		SpanID:     lr.SpanID().HexString(),
 		Severity:   lr.SeverityText(),
 		Attributes: lr.Attributes().AsRaw(),
-		Resources:  res.Attributes().AsRaw(),
 	}
 	lr.Body().Type()
 

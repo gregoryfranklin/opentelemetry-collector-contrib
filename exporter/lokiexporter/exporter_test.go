@@ -590,7 +590,7 @@ func TestExporter_convertLogtoJSONEntry(t *testing.T) {
 	entry, err := convertLogToJSONEntry(lr, res)
 	expEntry := &logproto.Entry{
 		Timestamp: time.Unix(0, int64(lr.Timestamp())),
-		Line:      `{"body":"log message","resources":{"host.name":"something"}}`,
+		Line:      `{"body":"log message"}`,
 	}
 	require.Nil(t, err)
 	require.NotNil(t, entry)
