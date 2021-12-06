@@ -91,13 +91,14 @@ func (l *lokiExporter) pushLogData(ctx context.Context, ld pdata.Logs) error {
 		return consumererror.NewLogs(err, ld)
 	}
 
-	_, _ = io.Copy(ioutil.Discard, resp.Body)
-	_ = resp.Body.Close()
-
 	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
-		err = fmt.Errorf("HTTP %d %q", resp.StatusCode, http.StatusText(resp.StatusCode))
+		body, _ := io.ReadAll(resp.Body)
+		err = fmt.Errorf("HTTP %d %q %q", resp.StatusCode, http.StatusText(resp.StatusCode), body)
 		return consumererror.NewLogs(err, ld)
+	} else {
+		_, _ = io.Copy(ioutil.Discard, resp.Body)
 	}
+	_ = resp.Body.Close()
 
 	return nil
 }
