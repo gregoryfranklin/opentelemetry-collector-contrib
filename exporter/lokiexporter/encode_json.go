@@ -39,6 +39,8 @@ func serializeBody(body pdata.AttributeValue) ([]byte, error) {
 		data, err = json.Marshal(body.StringVal())
 	} else if body.Type() == pdata.AttributeValueTypeMap {
 		data, err = json.Marshal(body.MapVal().AsRaw())
+	} else if body.Type() == pdata.AttributeValueTypeEmpty {
+		// no body
 	} else {
 		err = fmt.Errorf("unsuported body type %s to serialize", body.Type().String())
 	}

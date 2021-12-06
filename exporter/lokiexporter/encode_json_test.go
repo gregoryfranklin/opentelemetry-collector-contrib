@@ -64,3 +64,14 @@ func TestConvertNonString(t *testing.T) {
 	t.Log(out, err)
 	assert.Equal(t, in, out)
 }
+
+func TestConvertEmptyBody(t *testing.T) {
+	in := `{"name":"name","traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"}}`
+	log, resource := exampleLog()
+	pdata.NewAttributeValueEmpty().CopyTo(log.Body())
+
+	out, err := encodeJSON(log, resource)
+	t.Log(in)
+	t.Log(out, err)
+	assert.Equal(t, in, out)
+}
