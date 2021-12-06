@@ -52,7 +52,7 @@ func TestConvertString(t *testing.T) {
 }
 
 func TestConvertNonString(t *testing.T) {
-	in := exampleJSON()
+	in := `{"name":"name","body":{"key1":"value","key2":"value"},"traceid":"01020304000000000000000000000000","spanid":"0506070800000000","severity":"error","attributes":{"attr1":"1","attr2":"2"},"resources":{"host.name":"something"}}`
 	log, resource := exampleLog()
 	mapVal := pdata.NewAttributeValueMap()
 	mapVal.MapVal().Insert("key1", pdata.NewAttributeValueString("value"))
@@ -62,5 +62,5 @@ func TestConvertNonString(t *testing.T) {
 	out, err := encodeJSON(log, resource)
 	t.Log(in)
 	t.Log(out, err)
-	assert.EqualError(t, err, "unsuported body type to serialize")
+	assert.Equal(t, in, out)
 }

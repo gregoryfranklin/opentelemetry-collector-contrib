@@ -25,7 +25,7 @@ import (
 
 type lokiEntry struct {
 	Name       string                 `json:"name,omitempty"`
-	Body       string                 `json:"body,omitempty"`
+	Body       json.RawMessage        `json:"body,omitempty"`
 	TraceID    string                 `json:"traceid,omitempty"`
 	SpanID     string                 `json:"spanid,omitempty"`
 	Severity   string                 `json:"severity,omitempty"`
@@ -33,22 +33,24 @@ type lokiEntry struct {
 	Resources  map[string]interface{} `json:"resources,omitempty"`
 }
 
-func serializeBody(body pdata.AttributeValue) (string, error) {
-	str := ""
+func serializeBody(body pdata.AttributeValue) ([]byte, error) {
+	data := []byte{}
 	var err error
 	if body.Type() == pdata.AttributeValueTypeString {
-		str = body.StringVal()
+		data, err = json.Marshal(body.StringVal())
+	} else if body.Type() == pdata.AttributeValueTypeMap {
+		data, err = json.Marshal(body.MapVal().AsRaw())
 	} else {
 		err = fmt.Errorf("unsuported body type to serialize")
 	}
-	return str, err
+	return data, err
 }
 
 func encodeJSON(lr pdata.LogRecord, res pdata.Resource) (string, error) {
 	var logRecord lokiEntry
 	var jsonRecord []byte
 	var err error
-	var body string
+	var body []byte
 
 	body, err = serializeBody(lr.Body())
 	if err != nil {
