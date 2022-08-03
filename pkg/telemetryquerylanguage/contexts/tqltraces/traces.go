@@ -45,6 +45,38 @@ func (ctx SpanTransformContext) GetResource() pcommon.Resource {
 	return ctx.Resource
 }
 
+type SpanEventTransformContext struct {
+	SpanEvent            ptrace.SpanEvent
+	InstrumentationScope pcommon.InstrumentationScope
+	Resource             pcommon.Resource
+}
+
+func (ctx SpanEventTransformContext) GetItem() interface{} {
+	return ctx.SpanEvent
+}
+
+func (ctx SpanEventTransformContext) GetInstrumentationScope() pcommon.InstrumentationScope {
+	return ctx.InstrumentationScope
+}
+
+func (ctx SpanEventTransformContext) GetResource() pcommon.Resource {
+	return ctx.Resource
+}
+
+// pathGetSetter is a getSetter which has been resolved using a path expression provided by a user.
+type pathGetSetter struct {
+	getter tql.ExprFunc
+	setter func(ctx tql.TransformContext, val interface{})
+}
+
+func (path pathGetSetter) Get(ctx tql.TransformContext) interface{} {
+	return path.getter(ctx)
+}
+
+func (path pathGetSetter) Set(ctx tql.TransformContext, val interface{}) {
+	path.setter(ctx, val)
+}
+
 var symbolTable = map[tql.EnumSymbol]tql.Enum{
 	"SPAN_KIND_UNSPECIFIED": tql.Enum(ptrace.SpanKindUnspecified),
 	"SPAN_KIND_INTERNAL":    tql.Enum(ptrace.SpanKindInternal),
@@ -136,7 +168,23 @@ func newPathGetSetter(path []tql.Field) (tql.GetSetter, error) {
 	case "dropped_attributes_count":
 		return accessDroppedAttributesCount(), nil
 	case "events":
-		return accessEvents(), nil
+		if len(path) == 1 {
+			return accessEvents(), nil
+		}
+		switch path[1].Name {
+		case "name":
+			return accessEventsName(), nil
+		case "dropped_attributes_count":
+			//			return accessEventsDroppedAttributesCount(), nil
+		case "timestamp":
+			//			return accessEventsTimestamp(), nil
+		case "attributes":
+			mapKey := path[1].MapKey
+			if mapKey == nil {
+				return accessEventsAttributes(), nil
+			}
+			//			return accessEventsAttributesKey(mapKey), nil
+		}
 	case "dropped_events_count":
 		return accessDroppedEventsCount(), nil
 	case "links":
@@ -441,6 +489,33 @@ func accessEvents() tql.StandardGetSetter {
 					return true
 				})
 				slc.CopyTo(ctx.GetItem().(ptrace.Span).Events())
+			}
+		},
+	}
+}
+
+func accessEventsName() pathGetSetter {
+	return pathGetSetter{
+		getter: func(ctx tql.TransformContext) interface{} {
+			return ctx.GetItem().(ptrace.SpanEvent).Name()
+		},
+		setter: func(ctx tql.TransformContext, val interface{}) {
+			if str, ok := val.(string); ok {
+				ctx.GetItem().(ptrace.SpanEvent).SetName(str)
+			}
+		},
+	}
+}
+
+func accessEventsAttributes() pathGetSetter {
+	return pathGetSetter{
+		getter: func(ctx tql.TransformContext) interface{} {
+			return ctx.GetItem().(ptrace.SpanEvent).Attributes()
+		},
+		setter: func(ctx tql.TransformContext, val interface{}) {
+			if attrs, ok := val.(pcommon.Map); ok {
+				ctx.GetItem().(ptrace.SpanEvent).Attributes().Clear()
+				attrs.CopyTo(ctx.GetItem().(ptrace.SpanEvent).Attributes())
 			}
 		},
 	}
