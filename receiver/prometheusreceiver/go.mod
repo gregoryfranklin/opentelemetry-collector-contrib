@@ -14,7 +14,7 @@ require (
 	go.opentelemetry.io/collector/pdata v0.56.1-0.20220803125008-a585d0de68c4
 	go.opentelemetry.io/collector/semconv v0.56.1-0.20220803125008-a585d0de68c4
 	go.uber.org/atomic v1.9.0
-	go.uber.org/zap v1.21.0
+	go.uber.org/zap v1.22.0
 	google.golang.org/protobuf v1.28.1
 	gopkg.in/yaml.v2 v2.4.0
 )
