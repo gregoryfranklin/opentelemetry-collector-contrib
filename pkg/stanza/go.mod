@@ -28,7 +28,7 @@ require (
 	github.com/influxdata/go-syslog/v3 v3.0.1-0.20210608084020-ac565dc76ba6
 	github.com/open-telemetry/opentelemetry-collector-contrib/extension/storage v0.56.0
 	go.opentelemetry.io/collector/pdata v0.56.1-0.20220803125008-a585d0de68c4
-	go.uber.org/atomic v1.9.0
+	go.uber.org/atomic v1.10.0
 	go.uber.org/multierr v1.8.0
 )
 
