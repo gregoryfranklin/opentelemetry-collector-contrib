@@ -63,20 +63,6 @@ func (ctx SpanEventTransformContext) GetResource() pcommon.Resource {
 	return ctx.Resource
 }
 
-// pathGetSetter is a getSetter which has been resolved using a path expression provided by a user.
-type pathGetSetter struct {
-	getter tql.ExprFunc
-	setter func(ctx tql.TransformContext, val interface{})
-}
-
-func (path pathGetSetter) Get(ctx tql.TransformContext) interface{} {
-	return path.getter(ctx)
-}
-
-func (path pathGetSetter) Set(ctx tql.TransformContext, val interface{}) {
-	path.setter(ctx, val)
-}
-
 var symbolTable = map[tql.EnumSymbol]tql.Enum{
 	"SPAN_KIND_UNSPECIFIED": tql.Enum(ptrace.SpanKindUnspecified),
 	"SPAN_KIND_INTERNAL":    tql.Enum(ptrace.SpanKindInternal),
@@ -494,12 +480,12 @@ func accessEvents() tql.StandardGetSetter {
 	}
 }
 
-func accessEventsName() pathGetSetter {
-	return pathGetSetter{
-		getter: func(ctx tql.TransformContext) interface{} {
+func accessEventsName() tql.StandardGetSetter {
+	return tql.StandardGetSetter{
+		Getter: func(ctx tql.TransformContext) interface{} {
 			return ctx.GetItem().(ptrace.SpanEvent).Name()
 		},
-		setter: func(ctx tql.TransformContext, val interface{}) {
+		Setter: func(ctx tql.TransformContext, val interface{}) {
 			if str, ok := val.(string); ok {
 				ctx.GetItem().(ptrace.SpanEvent).SetName(str)
 			}
@@ -507,12 +493,12 @@ func accessEventsName() pathGetSetter {
 	}
 }
 
-func accessEventsAttributes() pathGetSetter {
-	return pathGetSetter{
-		getter: func(ctx tql.TransformContext) interface{} {
+func accessEventsAttributes() tql.StandardGetSetter {
+	return tql.StandardGetSetter{
+		Getter: func(ctx tql.TransformContext) interface{} {
 			return ctx.GetItem().(ptrace.SpanEvent).Attributes()
 		},
-		setter: func(ctx tql.TransformContext, val interface{}) {
+		Setter: func(ctx tql.TransformContext, val interface{}) {
 			if attrs, ok := val.(pcommon.Map); ok {
 				ctx.GetItem().(ptrace.SpanEvent).Attributes().Clear()
 				attrs.CopyTo(ctx.GetItem().(ptrace.SpanEvent).Attributes())
