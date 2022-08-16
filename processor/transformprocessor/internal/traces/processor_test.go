@@ -165,6 +165,18 @@ func TestProcess(t *testing.T) {
 				td.ResourceSpans().At(0).ScopeSpans().At(0).Spans().At(0).SetKind(2)
 			},
 		},
+		{
+			query: `delete_span_events(events.name, ".*") where kind == 1`,
+			want: func(td ptrace.Traces) {
+				td.ResourceSpans().At(0).ScopeSpans().At(0).Spans().At(0).Events().RemoveIf(func(_ ptrace.SpanEvent) bool { return true })
+			},
+		},
+		{
+			query: `delete_span_events(events.name, "eventA")`,
+			want: func(td ptrace.Traces) {
+				td.ResourceSpans().At(0).ScopeSpans().At(0).Spans().At(1).Events().RemoveIf(func(se ptrace.SpanEvent) bool { return se.Name() == "eventA" })
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -312,6 +324,7 @@ func fillSpanOne(span ptrace.Span) {
 	status := span.Status()
 	status.SetCode(ptrace.StatusCodeError)
 	status.SetMessage("status-cancelled")
+	span.Events().AppendEmpty()
 }
 
 func fillSpanTwo(span ptrace.Span) {
@@ -329,4 +342,8 @@ func fillSpanTwo(span ptrace.Span) {
 	status := span.Status()
 	status.SetCode(ptrace.StatusCodeError)
 	status.SetMessage("status-cancelled")
+	event0 := span.Events().AppendEmpty()
+	event0.SetName("eventA")
+	event1 := span.Events().AppendEmpty()
+	event1.SetName("eventB")
 }

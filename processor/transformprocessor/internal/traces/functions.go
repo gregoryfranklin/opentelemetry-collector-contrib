@@ -15,10 +15,18 @@
 package traces // import "github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor/internal/traces"
 
 import (
+	"github.com/open-telemetry/opentelemetry-collector-contrib/pkg/telemetryquerylanguage/functions/tqlotel"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/processor/transformprocessor/internal/common"
 )
 
+var registry = map[string]interface{}{
+	"delete_span_events": tqlotel.DeleteSpanEvents,
+}
+
 func Functions() map[string]interface{} {
-	// No trace-only functions yet.
-	return common.Functions()
+	functions := common.Functions()
+	for k, v := range registry {
+		functions[k] = v
+	}
+	return functions
 }
