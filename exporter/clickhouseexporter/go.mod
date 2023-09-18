@@ -4,21 +4,20 @@ go 1.18
 
 require (
 	go.opentelemetry.io/collector v0.58.0
-	go.uber.org/zap v1.22.0
+	go.uber.org/zap v1.26.0
 
 )
 
-require go.uber.org/multierr v1.8.0
+require go.uber.org/multierr v1.10.0
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.2.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	go.opentelemetry.io/collector/pdata v0.58.0
 	go.opentelemetry.io/collector/semconv v0.58.0
 )
 
 require (
-	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
@@ -36,7 +35,6 @@ require (
 	github.com/paulmach/orb v0.7.1 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	go.opencensus.io v0.23.0 // indirect
