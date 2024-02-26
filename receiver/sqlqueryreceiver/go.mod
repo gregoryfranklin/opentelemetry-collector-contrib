@@ -10,13 +10,13 @@ require (
 	github.com/lib/pq v1.10.6
 	github.com/sijms/go-ora/v2 v2.5.2
 	github.com/snowflakedb/gosnowflake v1.6.12
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	github.com/testcontainers/testcontainers-go v0.13.0
 	go.opentelemetry.io/collector v0.58.0
 	go.opentelemetry.io/collector/pdata v0.58.0
 	go.opentelemetry.io/otel/trace v1.9.0
-	go.uber.org/multierr v1.8.0
-	go.uber.org/zap v1.22.0
+	go.uber.org/multierr v1.10.0
+	go.uber.org/zap v1.27.0
 )
 
 require (
@@ -83,7 +83,6 @@ require (
 	go.opencensus.io v0.23.0 // indirect
 	go.opentelemetry.io/otel v1.9.0 // indirect
 	go.opentelemetry.io/otel/metric v0.31.0 // indirect
-	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75 // indirect
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
