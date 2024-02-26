@@ -8,11 +8,10 @@ require (
 	github.com/mongodb-forks/digest v1.0.4
 	go.mongodb.org/atlas v0.16.0
 	go.opentelemetry.io/collector v0.58.0
-	go.uber.org/zap v1.22.0
+	go.uber.org/zap v1.27.0
 )
 
 require (
-	github.com/benbjohnson/clock v1.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -46,9 +45,9 @@ require (
 
 require (
 	github.com/open-telemetry/opentelemetry-collector-contrib/internal/common v0.58.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	go.opentelemetry.io/collector/pdata v0.58.0
-	go.uber.org/multierr v1.8.0
+	go.uber.org/multierr v1.10.0
 )
 
 replace github.com/open-telemetry/opentelemetry-collector-contrib/internal/common => ../../internal/common
