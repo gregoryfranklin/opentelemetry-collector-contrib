@@ -1,14 +1,15 @@
 module github.com/open-telemetry/opentelemetry-collector-contrib/receiver/skywalkingreceiver
 
 go 1.18
+toolchain go1.24.1
 
 require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.10.0
 	go.opentelemetry.io/collector v0.58.0
 	go.opentelemetry.io/collector/pdata v0.58.0
-	go.opentelemetry.io/collector/semconv v0.58.0
+	go.opentelemetry.io/collector/semconv v0.122.1
 	go.uber.org/multierr v1.8.0
 	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.1
