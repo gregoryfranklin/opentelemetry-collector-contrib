@@ -1,6 +1,6 @@
 module github.com/open-telemetry/opentelemetry-collector-contrib/receiver/carbonreceiver
 
-go 1.18
+go 1.23
 
 require (
 	github.com/census-instrumentation/opencensus-proto v0.3.0
@@ -10,8 +10,7 @@ require (
 	go.opencensus.io v0.23.0
 	go.opentelemetry.io/collector v0.58.0
 	go.uber.org/zap v1.22.0
-	google.golang.org/protobuf v1.28.1
-
+	google.golang.org/protobuf v1.36.10
 )
 
 require (
